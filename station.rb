@@ -12,14 +12,19 @@ class Station
 
   def show_trains(type = :all)
     if type == :all
-      "#{type} - #{@trains.size}"
+      "#{type} - #{self.trains.size}"
     else
-      train_by_type = @trains.select { |train| train.type == type }
-      "#{type} - #{train_by_type.size}"
+      "#{type} - #{train_by_type(type).size}"
     end
   end
 
   def send_train(train)
     @trains.delete(train) || "There is no such train"
+  end
+
+  private
+
+  def train_by_type(type)
+    @trains.select { |train| train.type == type }
   end
 end
