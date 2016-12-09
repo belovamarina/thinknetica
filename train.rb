@@ -1,11 +1,11 @@
 class Train
-  attr_accessor :wagons_count, :speed
-  attr_reader :type, :id, :route, :current_station_index
+  attr_accessor :wagons, :speed
+  attr_reader :type, :id, :route
 
-  def initialize(id, type, wagons_count = 0, speed = 0)
+  def initialize(id, type, speed = 0)
     @id = id
     @type = type
-    @wagons_count = wagons_count
+    @wagons = []
     @speed = speed
   end
 
@@ -16,25 +16,12 @@ class Train
 
   def go_to_next_station
     if @route
-      next_station = @route.stations[@current_station_index + 1]
-      @route.stations[@current_station_index].send_train(self)
+      current_station.send_train(self)
       next_station.get_train(self)
       @current_station_index += 1
     else
       "Train doesn't have route"
     end
-  end
-
-  def current_station
-    @route ? @route.stations[@current_station_index] : "Train doesn't have route"
-  end
-
-  def next_station
-    @route ? @route.stations[@current_station_index + 1] : "Train doesn't have route"
-  end
-
-  def previous_station
-    @route ? @route.stations[@current_station_index - 1] : "Train doesn't have route"
   end
 
   def speed_up
@@ -45,20 +32,30 @@ class Train
     self.speed = 0
   end
 
-  def add_wagon
-    if self.speed == 0
-      self.wagons_count += 1
-    else
-      "Stop the train first!"
-    end
+  def add_wagon(wagon)
+    return "Stop the train first!" if self.speed > 0
+    wagon.type == self.type ? self.wagons << wagon : "Wrong type of wagon!"
   end
 
-  def remove_wagon
-    if self.speed == 0 && self.wagons_count > 0
-      self.wagons_count -= 1
-    else
-      "Stop the train or/and add wagons!"
-    end
+  def remove_wagon(wagon)
+    return "Stop the train first!" if self.speed > 0
+    self.wagons.delete(wagon)
   end
+
+  def current_station
+    @route ? @route.stations[@current_station_index] :  "Train doesn't have route"
+  end
+
+  def next_station
+    @route ? @route.stations[@current_station_index + 1] : "Train doesn't have route"
+  end
+
+  def previous_station
+    @route ? @route.stations[@current_station_index - 1] : "Train doesn't have route"
+  end
+
+  private
+
+  attr_reader :current_station_index
 end
 
