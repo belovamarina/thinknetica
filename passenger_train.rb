@@ -2,9 +2,7 @@ require_relative 'train'
 
 class PassengerTrain < Train
   def initialize(id, speed = 0)
-    @id = id
+    super
     @type = :passenger
-    @wagons = []
-    @speed = speed
   end
 end

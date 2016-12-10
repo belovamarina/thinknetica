@@ -1,9 +1,20 @@
+require 'byebug'
 class Station
   attr_reader :name, :trains
+  @@all_stations = []
 
   def initialize(name)
     @name = name
     @trains = []
+    @@all_stations << self
+  end
+
+  def self.all
+    @@all_stations
+  end
+
+  def self.clear_all_stations_count
+    @@all_stations = []
   end
 
   def get_train(train)

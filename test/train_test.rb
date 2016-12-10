@@ -1,5 +1,6 @@
 require 'minitest/autorun'
-Dir['*.rb'].each {|file| require_relative file }
+require 'byebug'
+Dir['../*.rb'].each {|file| require_relative file }
 
 class TrainTest < Minitest::Test
   def setup
@@ -13,48 +14,9 @@ class TrainTest < Minitest::Test
     @passenger_train2 = PassengerTrain.new(2)
     @passenger_train3 = PassengerTrain.new(3)
 
-    @cargo_train1 = CargoTrain.new(1)
-    @passenger_train2 = PassengerTrain.new(2)
-    @passenger_train3 = PassengerTrain.new(3)
-
     @cargo_wagon1 = CargoWagon.new(1)
     @passenger_wagon2 = PassengerWagon.new(2)
     @passenger_wagon3 = PassengerWagon.new(3)
-  end
-
-  # Station
-  def test_station_name
-    assert_equal "Moscow", @st1.name
-  end
-
-  def test_station_get_trains
-    @st1.get_train(@cargo_train1)
-    assert_equal @st1.trains.last, @cargo_train1
-  end
-
-  def test_station_send_trains
-    @st1.get_train(@cargo_train1)
-    @st1.get_train(@passenger_train2)
-    @st1.send_train(@cargo_train1)
-    refute_includes @st1.trains, @cargo_train1
-  end
-
-  def test_empty_station_send_trains
-    assert_equal "There is no such train", @st1.send_train(@cargo_cargo_)
-  end
-
-  def test_show_all_trains_on_station
-    @st1.get_train(@cargo_train1)
-    @st1.get_train(@passenger_train2)
-    @st1.get_train(@passenger_train3)
-    assert_equal "all - 3", @st1.show_trains
-  end
-
-  def test_show_trains_on_station_by_type
-    @st1.get_train(@cargo_train1)
-    @st1.get_train(@passenger_train2)
-    @st1.get_train(@passenger_train3)
-    assert_equal "cargo - 1", @st1.show_trains(:cargo)
   end
 
   # Route
@@ -145,5 +107,29 @@ class TrainTest < Minitest::Test
     @passenger_train2.get_route(@route)
     @passenger_train2.go_to_next_station
     refute_includes @st1.trains, @passenger_train2
+  end
+
+  def set_company_name_for_train
+    @cargo_train1.company_name = "ZIL"
+    assert_equal "ZIL", @cargo_train1.company_name
+  end
+
+  def set_company_name_for_wagon
+    @cargo_wagon1.company_name = "OTIS"
+    assert_equal "OTIS", @cargo_wagon1.company_name
+  end
+
+  def test_find_train
+    PassengerTrain.clear_trains
+    @passenger_train2 = PassengerTrain.new(2)
+    @passenger_train3 = PassengerTrain.new(3)
+    assert_equal @passenger_train3, PassengerTrain.find(3)
+  end
+
+  def test_register_instances
+    Train.clear_instances
+    Train.new(5, :cargo)
+    Train.new(6, :cargo)
+    assert_equal 2, Train.instances
   end
 end
