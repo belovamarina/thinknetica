@@ -1,12 +1,30 @@
+require_relative 'company'
+require_relative 'instance_counter'
+
 class Train
+  include Company
+  include InstanceCounter
   attr_accessor :wagons, :speed
   attr_reader :type, :id, :route
+
+  @@trains = []
 
   def initialize(id, type, speed = 0)
     @id = id
     @type = type
     @wagons = []
     @speed = speed
+
+    register_instance
+    register_train
+  end
+
+  def self.find(id)
+    @@trains.find { |train| train.id == id }
+  end
+
+  def self.clear_trains
+    @@trains = []
   end
 
   def get_route(route)
@@ -55,7 +73,10 @@ class Train
   end
 
   private
-
   attr_reader :current_station_index
+
+  def register_train
+    @@trains << self
+  end
 end
 
