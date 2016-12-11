@@ -15,6 +15,7 @@ class Train
     @wagons = []
     @speed = speed
 
+    validate!(id)
     register_instance
     register_train
   end
@@ -25,6 +26,12 @@ class Train
 
   def self.clear_trains
     @@trains = []
+  end
+
+  def valid?(train)
+    validate!(train.id)
+  rescue ArgumentError
+    false
   end
 
   def get_route(route)
@@ -51,29 +58,36 @@ class Train
   end
 
   def add_wagon(wagon)
-    return "Stop the train first!" if self.speed > 0
-    wagon.type == self.type ? self.wagons << wagon : "Wrong type of wagon!"
+    return 'Stop the train first!' if self.speed > 0
+    wagon.type == self.type ? self.wagons << wagon : 'Wrong type of wagon!'
   end
 
   def remove_wagon(wagon)
-    return "Stop the train first!" if self.speed > 0
+    return 'Stop the train first!' if self.speed > 0
     self.wagons.delete(wagon)
   end
 
   def current_station
-    @route ? @route.stations[@current_station_index] :  "Train doesn't have route"
+    @route.stations[@current_station_index] rescue NoMethodError "Train doesn't have route"
   end
 
   def next_station
-    @route ? @route.stations[@current_station_index + 1] : "Train doesn't have route"
+    @route.stations[@current_station_index + 1] rescue NoMethodError "Train doesn't have route"
   end
 
   def previous_station
-    @route ? @route.stations[@current_station_index - 1] : "Train doesn't have route"
+    @route.stations[@current_station_index - 1] rescue NoMethodError "Train doesn't have route"
   end
 
-  private
+  protected
+
+  VALID_ID = /^[a-z0-9]{3}-*[a-z0-9]{2}$/i
   attr_reader :current_station_index
+
+  def validate!(id)
+    raise ArgumentError 'Wrong type of train id' if id !~ VALID_ID
+    true
+  end
 
   def register_train
     @@trains << self
