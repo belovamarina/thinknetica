@@ -46,7 +46,7 @@ class Station
 
   def validate!(name)
     if !name.is_a?(String) || name.empty?
-      raise ArgumentError 'Wrong type of station name'
+      raise 'Wrong type of station name'
     else
       true
     end
