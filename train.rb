@@ -30,7 +30,7 @@ class Train
 
   def valid?(train)
     validate!(train.id)
-  rescue ArgumentError
+  rescue StandardError
     false
   end
 
@@ -85,7 +85,7 @@ class Train
   attr_reader :current_station_index
 
   def validate!(id)
-    raise ArgumentError 'Wrong type of train id' if id !~ VALID_ID
+    raise 'Wrong type of train id' if id !~ VALID_ID
     true
   end
 

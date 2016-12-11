@@ -132,4 +132,10 @@ class TrainTest < Minitest::Test
     Train.new('543-21', :cargo)
     assert_equal 2, Train.instances
   end
+
+  def test_raising_error
+    assert_raises StandardError do
+      PassengerTrain.new('123')
+    end
+  end
 end
