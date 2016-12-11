@@ -1,4 +1,5 @@
 require 'byebug'
+
 class Station
   attr_reader :name, :trains
   @@all_stations = []
@@ -6,6 +7,8 @@ class Station
   def initialize(name)
     @name = name
     @trains = []
+
+    validate!(name)
     @@all_stations << self
   end
 
@@ -15,6 +18,12 @@ class Station
 
   def self.clear_all_stations_count
     @@all_stations = []
+  end
+
+  def valid?(station)
+    validate!(station.name)
+  rescue ArgumentError
+    false
   end
 
   def get_train(train)
@@ -30,10 +39,18 @@ class Station
   end
 
   def send_train(train)
-    @trains.delete(train) || "There is no such train"
+    @trains.delete(train) || 'There is no such train'
   end
 
   private
+
+  def validate!(name)
+    if !name.is_a?(String) || name.empty?
+      raise ArgumentError 'Wrong type of station name'
+    else
+      true
+    end
+  end
 
   def train_by_type(type)
     @trains.select { |train| train.type == type }

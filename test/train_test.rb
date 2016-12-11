@@ -1,6 +1,6 @@
 require 'minitest/autorun'
 require 'byebug'
-Dir['../*.rb'].each {|file| require_relative file }
+Dir['../*.rb'].each {|file| require_relative file if file !~ /main/ }
 
 class TrainTest < Minitest::Test
   def setup
@@ -10,9 +10,9 @@ class TrainTest < Minitest::Test
 
     @route = Route.new(@st1, @st2)
 
-    @cargo_train1 = CargoTrain.new(1)
-    @passenger_train2 = PassengerTrain.new(2)
-    @passenger_train3 = PassengerTrain.new(3)
+    @cargo_train1 = CargoTrain.new('123-VB')
+    @passenger_train2 = PassengerTrain.new('VB3-12')
+    @passenger_train3 = PassengerTrain.new('12VB3')
 
     @cargo_wagon1 = CargoWagon.new(1)
     @passenger_wagon2 = PassengerWagon.new(2)
@@ -121,15 +121,15 @@ class TrainTest < Minitest::Test
 
   def test_find_train
     PassengerTrain.clear_trains
-    @passenger_train2 = PassengerTrain.new(2)
-    @passenger_train3 = PassengerTrain.new(3)
-    assert_equal @passenger_train3, PassengerTrain.find(3)
+    @passenger_train2 = PassengerTrain.new('12345')
+    @passenger_train3 = PassengerTrain.new('vbn-vf')
+    assert_equal @passenger_train2, PassengerTrain.find('12345')
   end
 
   def test_register_instances
     Train.clear_instances
-    Train.new(5, :cargo)
-    Train.new(6, :cargo)
+    Train.new('123-45', :cargo)
+    Train.new('543-21', :cargo)
     assert_equal 2, Train.instances
   end
 end
