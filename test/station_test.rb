@@ -2,7 +2,7 @@ require 'minitest/autorun'
 require 'byebug'
 Dir['../*.rb'].each {|file| require_relative file if file !~ /main/ }
 
-class TrainTest < Minitest::Test
+class StationTest < Minitest::Test
   def setup
     @st1 = Station.new('Moscow')
     @st2 = Station.new('Borovsk')
@@ -60,5 +60,10 @@ class TrainTest < Minitest::Test
     assert_raises StandardError do
        Station.new('')
     end
+  end
+
+  def test_call_block
+    @st1.get_train(@cargo_train1)
+    assert_equal '12345', @st1.call_block { |x| x.first.id }
   end
 end
