@@ -138,4 +138,9 @@ class TrainTest < Minitest::Test
       PassengerTrain.new('123')
     end
   end
+
+  def test_call_block
+    @cargo_train1.add_wagon(@cargo_wagon1)
+    assert_equal "cargo", @cargo_train1.call_block { |wagon| return wagon.type }
+  end
 end
