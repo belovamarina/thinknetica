@@ -1,7 +1,20 @@
 require_relative 'wagon'
 
 class PassengerWagon < Wagon
-  def initialize(type)
+  attr_reader :places
+  attr_accessor :taken_places
+
+  def initialize(places)
     super(:passenger)
+    @places = places
+    @taken_places = 0
+  end
+
+  def take_place
+    self.taken_places += 1
+  end
+
+  def free_places
+    self.places - self.taken_places
   end
 end

@@ -42,6 +42,10 @@ class Station
     @trains.delete(train) || 'There is no such train'
   end
 
+  def call_block
+    yield(@trains)
+  end
+
   private
 
   def validate!(name)

@@ -79,6 +79,12 @@ class Train
     @route.stations[@current_station_index - 1] rescue NoMethodError "Train doesn't have route"
   end
 
+  def call_block
+    self.wagons.each do |wagon|
+      yield(wagon)
+    end
+  end
+
   protected
 
   VALID_ID = /^[a-z0-9]{3}-*[a-z0-9]{2}$/i
