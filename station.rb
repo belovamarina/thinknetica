@@ -32,7 +32,7 @@ class Station
 
   def show_trains(type = :all)
     if type == :all
-      "#{type} - #{self.trains.size}"
+      "#{type} - #{trains.size}"
     else
       "#{type} - #{train_by_type(type).size}"
     end

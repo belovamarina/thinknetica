@@ -15,6 +15,6 @@ class PassengerWagon < Wagon
   end
 
   def free_places
-    self.places - self.taken_places
+    places - self.taken_places
   end
 end

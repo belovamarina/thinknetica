@@ -14,6 +14,6 @@ class CargoWagon < Wagon
   end
 
   def free_space
-    self.space - self.taken_space
+    space - self.taken_space
   end
 end

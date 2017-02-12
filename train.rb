@@ -59,28 +59,34 @@ class Train
 
   def add_wagon(wagon)
     return 'Stop the train first!' if self.speed > 0
-    wagon.type == self.type ? self.wagons << wagon : 'Wrong type of wagon!'
+    wagon.type == type ? wagons << wagon : 'Wrong type of wagon!'
   end
 
   def remove_wagon(wagon)
     return 'Stop the train first!' if self.speed > 0
-    self.wagons.delete(wagon)
+    wagons.delete(wagon)
   end
 
   def current_station
-    @route.stations[@current_station_index] rescue NoMethodError "Train doesn't have route"
+    @route.stations[@current_station_index]
+  rescue
+    NoMethodError "Train doesn't have route"
   end
 
   def next_station
-    @route.stations[@current_station_index + 1] rescue NoMethodError "Train doesn't have route"
+    @route.stations[@current_station_index + 1]
+  rescue
+    NoMethodError "Train doesn't have route"
   end
 
   def previous_station
-    @route.stations[@current_station_index - 1] rescue NoMethodError "Train doesn't have route"
+    @route.stations[@current_station_index - 1]
+  rescue
+    NoMethodError "Train doesn't have route"
   end
 
   def call_block
-    self.wagons.each do |wagon|
+    wagons.each do |wagon|
       yield(wagon)
     end
   end
@@ -99,4 +105,3 @@ class Train
     @@trains << self
   end
 end
-

@@ -6,7 +6,7 @@ class Route
   end
 
   def show_route
-    self.stations.map(&:name)
+    stations.map(&:name)
   end
 
   def add_station(index = -2, station)

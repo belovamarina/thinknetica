@@ -1,12 +1,12 @@
 require 'minitest/autorun'
 require 'byebug'
-Dir['../*.rb'].each {|file| require_relative file if file !~ /main/ }
+Dir['../*.rb'].each { |file| require_relative file if file !~ /main/ }
 
 class TrainTest < Minitest::Test
   def setup
-    @st1 = Station.new("Moscow")
-    @st2 = Station.new("Borovsk")
-    @st3 = Station.new("Nara")
+    @st1 = Station.new('Moscow')
+    @st2 = Station.new('Borovsk')
+    @st3 = Station.new('Nara')
 
     @route = Route.new(@st1, @st2)
 
@@ -21,7 +21,7 @@ class TrainTest < Minitest::Test
 
   # Route
   def test_show_route
-    assert_equal ["Moscow", "Borovsk"], @route.show_route
+    assert_equal %w(Moscow Borovsk), @route.show_route
   end
 
   def test_add_station_to_route
@@ -47,18 +47,18 @@ class TrainTest < Minitest::Test
 
   def test_add_wagon_while_moving
     @cargo_train1.speed_up
-    assert_equal "Stop the train first!", @cargo_train1.add_wagon(@cargo_wagon1)
+    assert_equal 'Stop the train first!', @cargo_train1.add_wagon(@cargo_wagon1)
   end
 
   def test_remove_wagon_while_moving
     @cargo_train1.add_wagon(@cargo_wagon1)
     @cargo_train1.speed_up
-    assert_equal "Stop the train first!", @cargo_train1.remove_wagon(@cargo_wagon1)
+    assert_equal 'Stop the train first!', @cargo_train1.remove_wagon(@cargo_wagon1)
   end
 
   def test_add_wagon
     @cargo_train1.add_wagon(@cargo_wagon1)
-    assert_equal 1 , @cargo_train1.wagons.count
+    assert_equal 1, @cargo_train1.wagons.count
   end
 
   def test_remove_wagon
@@ -68,29 +68,29 @@ class TrainTest < Minitest::Test
   end
 
   def test_add_wrong_wagon
-    assert_equal "Wrong type of wagon!" , @cargo_train1.add_wagon(@passenger_wagon2)
+    assert_equal 'Wrong type of wagon!', @cargo_train1.add_wagon(@passenger_wagon2)
   end
 
   def test_show_current_station
     @passenger_train2.get_route(@route)
-    assert_equal "Moscow", @passenger_train2.current_station.name
+    assert_equal 'Moscow', @passenger_train2.current_station.name
   end
 
   def test_show_next_station
     @passenger_train2.get_route(@route)
-    assert_equal "Borovsk", @passenger_train2.next_station.name
+    assert_equal 'Borovsk', @passenger_train2.next_station.name
   end
 
   def test_go_to_next_station
     @passenger_train2.get_route(@route)
     @passenger_train2.go_to_next_station
-    assert_equal "Borovsk", @passenger_train2.current_station.name
+    assert_equal 'Borovsk', @passenger_train2.current_station.name
   end
 
   def test_show_previous_station
     @passenger_train2.get_route(@route)
     @passenger_train2.go_to_next_station
-    assert_equal "Moscow", @passenger_train2.previous_station.name
+    assert_equal 'Moscow', @passenger_train2.previous_station.name
   end
 
   def test_train_dont_move_without_route
@@ -110,13 +110,13 @@ class TrainTest < Minitest::Test
   end
 
   def set_company_name_for_train
-    @cargo_train1.company_name = "ZIL"
-    assert_equal "ZIL", @cargo_train1.company_name
+    @cargo_train1.company_name = 'ZIL'
+    assert_equal 'ZIL', @cargo_train1.company_name
   end
 
   def set_company_name_for_wagon
-    @cargo_wagon1.company_name = "OTIS"
-    assert_equal "OTIS", @cargo_wagon1.company_name
+    @cargo_wagon1.company_name = 'OTIS'
+    assert_equal 'OTIS', @cargo_wagon1.company_name
   end
 
   def test_find_train
@@ -141,6 +141,6 @@ class TrainTest < Minitest::Test
 
   def test_call_block
     @cargo_train1.add_wagon(@cargo_wagon1)
-    assert_equal "cargo", @cargo_train1.call_block { |wagon| return wagon.type }
+    assert_equal 'cargo', @cargo_train1.call_block { |wagon| return wagon.type }
   end
 end
