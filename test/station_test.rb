@@ -1,6 +1,6 @@
 require 'minitest/autorun'
 require 'byebug'
-Dir['../*.rb'].each {|file| require_relative file if file !~ /main/ }
+Dir['../*.rb'].each { |file| require_relative file if file !~ /main/ }
 
 class StationTest < Minitest::Test
   def setup
@@ -58,7 +58,7 @@ class StationTest < Minitest::Test
 
   def test_raising_error
     assert_raises StandardError do
-       Station.new('')
+      Station.new('')
     end
   end
 
