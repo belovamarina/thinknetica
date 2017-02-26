@@ -1,14 +1,17 @@
 require 'byebug'
+require_relative 'validation'
 
 class Station
+  extend Validation
+
   attr_reader :name, :trains
+  validate :name, presence: true, type: String
   @@all_stations = []
 
   def initialize(name)
     @name = name
     @trains = []
 
-    validate!(name)
     @@all_stations << self
   end
 
@@ -18,12 +21,6 @@ class Station
 
   def self.clear_all_stations_count
     @@all_stations = []
-  end
-
-  def valid?(station)
-    validate!(station.name)
-  rescue ArgumentError
-    false
   end
 
   def get_train(train)
@@ -47,14 +44,6 @@ class Station
   end
 
   private
-
-  def validate!(name)
-    if !name.is_a?(String) || name.empty?
-      raise 'Wrong type of station name'
-    else
-      true
-    end
-  end
 
   def train_by_type(type)
     @trains.select { |train| train.type == type }
