@@ -1,6 +1,6 @@
 require 'minitest/autorun'
 require 'byebug'
-Dir['../*.rb'].each { |file| require_relative file if file !~ /main/ }
+Dir['../*.rb'].each { |file| require_relative file if file !~ /main|metaprogramming/ }
 
 class StationTest < Minitest::Test
   def setup
@@ -57,13 +57,19 @@ class StationTest < Minitest::Test
   end
 
   def test_raising_error
+    @not_valid_station = Station.new(123)
     assert_raises StandardError do
-      Station.new('')
+      @not_valid_station.validate!
     end
   end
 
   def test_call_block
     @st1.get_train(@cargo_train1)
     assert_equal '12345', @st1.call_block { |x| x.first.id }
+  end
+
+  def test_validation_station_name
+    @not_valid_station = Station.new(123)
+    refute @not_valid_station.valid?
   end
 end

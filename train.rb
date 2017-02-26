@@ -1,11 +1,15 @@
 require_relative 'company'
 require_relative 'instance_counter'
+require_relative 'validation'
 
 class Train
   include Company
   include InstanceCounter
+  extend Validation
+
   attr_accessor :wagons, :speed
   attr_reader :type, :id, :route
+  validate :id, format: /^[a-z0-9]{3}-*[a-z0-9]{2}$/i
 
   @@trains = []
 
@@ -14,8 +18,8 @@ class Train
     @type = type
     @wagons = []
     @speed = speed
-
-    validate!(id)
+    #
+    # validate!(id)
     register_instance
     register_train
   end
@@ -26,12 +30,6 @@ class Train
 
   def self.clear_trains
     @@trains = []
-  end
-
-  def valid?(train)
-    validate!(train.id)
-  rescue StandardError
-    false
   end
 
   def get_route(route)
@@ -93,13 +91,7 @@ class Train
 
   protected
 
-  VALID_ID = /^[a-z0-9]{3}-*[a-z0-9]{2}$/i
   attr_reader :current_station_index
-
-  def validate!(id)
-    raise 'Wrong type of train id' if id !~ VALID_ID
-    true
-  end
 
   def register_train
     @@trains << self
